@@ -325,6 +325,20 @@ OPUS_EXPORT void opus_encoder_destroy(OpusEncoder *st);
   * @see opus_genericctls
   * @see opus_encoderctls
   */
+OPUS_EXPORT int opus_encoder_ctl_va_list(OpusEncoder *st, int request, va_list ap);
+/**@}*/
+
+/** Perform a CTL function on an Opus encoder.
+  *
+  * Generally the request and subsequent arguments are generated
+  * by a convenience macro.
+  * @param st <tt>OpusEncoder*</tt>: Encoder state.
+  * @param request This and all remaining parameters should be replaced by one
+  *                of the convenience macros in @ref opus_genericctls or
+  *                @ref opus_encoderctls.
+  * @see opus_genericctls
+  * @see opus_encoderctls
+  */
 OPUS_EXPORT int opus_encoder_ctl(OpusEncoder *st, int request, ...) OPUS_ARG_NONNULL(1);
 /**@}*/
 

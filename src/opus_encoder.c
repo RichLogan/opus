@@ -2263,14 +2263,12 @@ opus_int32 opus_encode_float(OpusEncoder *st, const float *pcm, int analysis_fra
 #endif
 
 
-int opus_encoder_ctl(OpusEncoder *st, int request, ...)
+int opus_encoder_ctl_va_list(OpusEncoder *st, int request, va_list ap)
 {
     int ret;
     CELTEncoder *celt_enc;
-    va_list ap;
 
     ret = OPUS_OK;
-    va_start(ap, request);
 
     celt_enc = (CELTEncoder*)((char*)st+st->celt_enc_offset);
 
@@ -2767,11 +2765,19 @@ int opus_encoder_ctl(OpusEncoder *st, int request, ...)
             ret = OPUS_UNIMPLEMENTED;
             break;
     }
-    va_end(ap);
     return ret;
 bad_arg:
-    va_end(ap);
     return OPUS_BAD_ARG;
+}
+
+int opus_encoder_ctl(OpusEncoder *st, int request, ...)
+{
+    int ret;
+    va_list ap;
+    va_start(ap, request);
+    ret = opus_encoder_ctl_va_list(st, request, ap);
+    va_end(ap);
+    return ret;
 }
 
 void opus_encoder_destroy(OpusEncoder *st)
